@@ -1,8 +1,8 @@
-Udemy Course Files
+#Udemy Course Files
 
 #! c++ tutorial 
 
-/*************************************** CONST KEYWORD *******************************************/
+##/*************************************** CONST KEYWORD *******************************************/
 /* Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
 /* If nothing is to the immediate left of the keyword whatever to the immediate right is taken. 
 
@@ -16,7 +16,7 @@ int const* and const int* are both the same and mean that the pointer is pointin
 
 int* const is constant pointer to an integer. So the address where the pointer is pointing cannot change.
 
-/*************************************** std::string **********************************************/
+##/*************************************** std::string **********************************************/
 
 std::string is of the basic_string type and so you should not include cstring / string.h headers along with it. 
 
@@ -27,7 +27,7 @@ string x ; internally has 16 characters of space allocated on the stack and for 
 
 you can access the character array of the string as char *myArr = myString.c_str();
 
-/***************************************** TEMPLATES ***********************************************/
+##/***************************************** TEMPLATES ***********************************************/
 templates are used for generic programming
 syntax: template <class T> or template <typename T>
 you can define 2 templates as well. template <typename T, typename U> 
@@ -74,7 +74,7 @@ now you can directly use int_pt as integer pointer
 e.g. typedef struct myName myName ; 
 so you wont need to use struct myName everytime for defining objects of class myName.
 
-/*************************************** Copy Constructor vs Assignment Operator **********************************************/
+/*************************************** Copy Constructor vs Assignment Operator *********************************************/
 
 A copy constructor can be called in the following cases:
 1. A function returns an object by value 
@@ -85,6 +85,22 @@ A copy constructor can be called in the following cases:
 classA a = b; copy constructor 
 ClassA a ,b ; 
 a = b ; assignment operator 
+
+Copy constructor takes const lvalue reference as the parameter so that both lvalue and rvalue refs can be captures as arguments
+
+Assignment operator returns reference to the object (*this) so that the object is passed by reference and not by value because
+if the object is passed by value everytime you do the assignment a copy constructor and a destructor will be called as well. 
+
+Remember to delete the heap memory in assignment operator if it has been already allocated in the constructors 
+
+/***************************************** Move Constructors **********************************************/
+
+Move constructors are used to take advantage of the memory allocated by temporary objects. 
+They take in rvalue references as the parameter
+One random issue could be assigning the moving temp object to itself. 
+
+Another issue could be that the destructor of the temporary object delete the heap memory if we are using it. 
+However you could ensure that the memory is not deleted if before the destructor is called the pointer that memory block is moved and set to nullptr. 
 
 /***************************************** Private Constructors ***************************************************************/
 ### Constructors can be defined in the private members but then inheritance of that class wont work
