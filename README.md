@@ -2,19 +2,19 @@
 
 #! c++ tutorial 
 
-##/*************************************** CONST KEYWORD *******************************************/
-/* Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
-/* If nothing is to the immediate left of the keyword whatever to the immediate right is taken. 
+## CONST KEYWORD 
+    - Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
+    - If nothing is to the immediate left of the keyword whatever to the immediate right is taken. 
 
-const char * p ===> pointer to a const char 
+    > const char * p ===> pointer to a const char 
 
-char const * p =====> pointer to a const char 
+    > char const * p =====> pointer to a const char 
 
-char * const p ===== > constant pointer to a char 
+    > char * const p ===== > constant pointer to a char 
 
-int const* and const int* are both the same and mean that the pointer is pointing to a constant integer whose value shouldnt be changed although the pointer can point to different constant integers. 
+    - int const\* and const int\* are both the same and mean that the pointer is pointing to a constant integer whose value shouldnt be changed although the pointer can point to different constant integers. 
 
-int* const is constant pointer to an integer. So the address where the pointer is pointing cannot change.
+    - int\* const is constant pointer to an integer. So the address where the pointer is pointing cannot change.
 
 ##/*************************************** std::string **********************************************/
 

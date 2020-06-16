@@ -6,7 +6,7 @@
 
 * Creation Date         :   15-06-2020
 
-* Last Modified         :   Mon Jun 15 20:23:48 2020
+* Last Modified         :   Tue Jun 16 18:43:33 2020
 
 ***********************************************************/
 
@@ -61,6 +61,15 @@ class Test{
             /* Deleting nullptrs in destructors is safe */ 
             /* The below line ensures that even after destructor is called on the object that was moved the original block of memory was not deleted */ 
             other.m_pBuffer = nullptr ; 
+        }
+
+        /* Move Assignment Operator */
+
+        Test &operator=(Test &&other){
+            delete [] m_pBuffer ;   // You need to deallocate the already allocated memory here. 
+            m_pBuffer = other.m_pBuffer ; 
+            other.m_pBuffer = nullptr ; 
+            return *this ;
         }
 
         /* Destructor */
