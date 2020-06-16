@@ -6,11 +6,11 @@
 - Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
 - If nothing is to the immediate left of the keyword whatever to the immediate right is taken. 
 
-> const char * p ===> pointer to a const char 
+> const char * p ======> pointer to a const char 
 
-> char const * p =====> pointer to a const char 
+> char const * p ======> pointer to a const char 
 
-> char * const p ===== > constant pointer to a char 
+> char * const p ======> constant pointer to a char 
 
 - int const\* and const int\* are both the same and mean that the pointer is pointing to a constant integer whose value shouldnt be changed although the pointer can point to different constant integers. 
 
@@ -158,6 +158,39 @@ if the object is passed by value everytime you do the assignment a copy construc
 ## Delegating Constructors 
 
 - C++98 dint allow you to call one constructor from another. C++11 allows you to 
+
+
+## Static Cast
+
+- Evaluated at compile time 
+
+> Parent &&parentObj = static\_cast\<Parent &&\>(lvalueobj) ; 
+
+## Curiously Recurring Template Pattern (CRTP)
+
+- Virtual functions resolution at runtime using VTables is a big cost to pay. 
+- However such resolution could be used at compile time and run time cost could be avoided. 
+- CRTP is a design pattern in C++ in which a class X derives from a class template instantiation using X itself as template argument. More generally it is known as F-bound polymorphism.
+- This is a time vs space trade off
+- Another use case of CRTP is, when it’s required to access the derived class object in the base class member functions then will have to use CRTP.
+
+    template<typename T>
+    class Parent{
+        void somefunction{
+            auto derived = static_cast<T*>(this) ;
+            derived->somefunction() ;
+        }
+    };
+
+## Dynamic Cast
+
+- Run Time Type Information needs to be turned on in compilers
+- Type information using dynamic\_cast\<T\> is derived at run time. 
+- This is thus safer than the static\_cast for polymorphism as static\_cast will allow base class objects to be pointed by derived class pointers. 
+- Dynamic cast returns nullptr if the run time type check fails 
+
+    Derived\* derivedptr = dynamic\_cast\<Derived\*>(Parentptr) ;
+
 
 
 
