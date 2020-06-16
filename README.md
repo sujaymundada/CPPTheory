@@ -152,7 +152,7 @@ if the object is passed by value everytime you do the assignment a copy construc
 
 - **Mutable** keyword makes this possible
 
-> [=]()mutable{a=3; cout << a << endl ; } ; 
+> \[\=\]()mutable{a=3; cout << a << endl ; } ; 
     >> a still retains its old value after this but prints 3 inside the lambda expression 
 
 ## Delegating Constructors 
