@@ -130,35 +130,34 @@ if the object is passed by value everytime you do the assignment a copy construc
 - Alternatives to the above functions are mainupulators. cout << setw(5) << x << endl  ;
 
 > fin.eof() != 0 // checks condition for the end of file
-  f.good()
-  f.fail()
-  f.good()
+> f.good()
+> f.fail()
+> f.good()
 
 
-/*************************************** Priority Queues Implementation **********************************************/
+## Priority Queues Implementation 
 
-priority_queue(T,vector<T>,comparator) ;
+> priority\_queue(T,vector<T>,comparator) ;
 
-class comparator{
-    bool operator()(classA a1, classB b1){
-        //Implementation
-    }
-};
+    class comparator{
+        bool operator()(classA a1, classB b1){
+            //Implementation
+        }
+    };
 
-/*************************************** Mutuable Lambdas **********************************************/
+## Mutuable Lambdas 
 
-Usually you pass parameters to lambadas by value or reference. 
-When you pass the variables by reference you are not allowed to change / assign to those variables in the
-scope of implementation of the lambda. 
+- Usually you pass parameters to lambadas by value or reference. 
+- When you pass the variables by reference you are not allowed to change / assign to those variables in the scope of implementation of the lambda. 
 
-Mutable keyword makes this possible
+- **Mutable** keyword makes this possible
 
-e.g. [=]()mutable{a=3; cout << a << endl ; } ; 
-a still retains its old value after this but prints 3 inside the lambda expression 
+> [=]()mutable{a=3; cout << a << endl ; } ; 
+    >> a still retains its old value after this but prints 3 inside the lambda expression 
 
-/*************************************** Delegating Constructors **********************************************/
+## Delegating Constructors 
 
-C++98 dint allow you to call one constructor from another. C++11 allows you to 
+- C++98 dint allow you to call one constructor from another. C++11 allows you to 
 
 
 
