@@ -16,46 +16,44 @@
 
 - int\* const is constant pointer to an integer. So the address where the pointer is pointing cannot change.
 
-##/*************************************** std::string **********************************************/
+## std::string 
 
-std::string is of the basic_string type and so you should not include cstring / string.h headers along with it. 
+- std::string is of the basic\_string type and so you should not include cstring / string.h headers along with it. 
 
-std::string can be casted to the const char* format using std::string.c_str() method 
+- std::string can be casted to the const char\* format using std::string.c\_str() method 
 
-char *x is just a pointer to the start of an char array 
-string x ; internally has 16 characters of space allocated on the stack and for longer string it uses memory on the heap
+- char \*x is just a pointer to the start of an char array 
+- string x ; internally has 16 characters of space allocated on the stack and for longer string it uses memory on the heap
 
-you can access the character array of the string as char *myArr = myString.c_str();
+- you can access the character array of the string as char \*myArr = myString.c\_str();
 
-##/***************************************** TEMPLATES ***********************************************/
-templates are used for generic programming
-syntax: template <class T> or template <typename T>
-you can define 2 templates as well. template <typename T, typename U> 
+## TEMPLATES 
+- templates are used for generic programming
+- syntax: template <class T> or template <typename T>
+- you can define 2 templates as well. template <typename T, typename U> 
 
-for defining class templates 
-    e.g.
-        template <typename T>;
-        class Array
-        {
+> for defining class templates 
+    template <typename T>;
+        class Array{
             private:
-                    T* ptr ;
-                    int size;
+                T* ptr ;
+                int size;
             public:
-                    Array(T arr,int size); //constructor 
-                    Array(int index);
+                Array(T arr,int size); //constructor 
+                Array(int index);
         }
 
-You can also define default values of the templates 
-e.g.    template <typename T, typename U =char>
+> You can also define default values of the templates 
+    e.g.    template <typename T, typename U =char>
 
-You can also pass non type parameters to templates. They are usually used to specify max or min values or const value for an instance of a template. It should be a compile time constant though
+> You can also pass non type parameters to templates. They are usually used to specify max or min values or const value for an instance of a template. It should be a compile time constant though
 
-Difference between function overloading and templates:
-    Function overloading is used when different argument based functions do *similar* functionality 
-    Templates are used when they have *identical* functionality 
+- Difference between function overloading and templates:
+    - Function overloading is used when different argument based functions do **similar** functionality 
+    - Templates are used when they have **identical** functionality 
 
-Ques. What happens when there is static member in a template class/function?
-Ans. Each instance of a template contains its own static variable.
+> Ques. What happens when there is static member in a template class/function?
+>> Ans. Each instance of a template contains its own static variable.
 
 /*************************************** extern keyword **********************************************/
 
