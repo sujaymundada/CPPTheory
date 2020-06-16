@@ -191,6 +191,22 @@ if the object is passed by value everytime you do the assignment a copy construc
 
     Derived\* derivedptr = dynamic\_cast\<Derived\*>(Parentptr) ;
 
+## Reinterpret cast
+
+- Has even less checks than static cast.
+- Used when static and dynamic cast cannot be used for casting very very different objects from one another. 
+
+
+## Perfect Forwarding
+
+- Correctly infers the reference type.
+- Use static\_cast to correctly infer the argument type to be lvalue or rvalue. 
+
+    template<typename T>
+    void check(T &&arg){
+        otherfunction(static\_cast<T>(arg)) ;
+    }
+
 
 
 
