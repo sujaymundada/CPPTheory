@@ -55,90 +55,84 @@
 > Ques. What happens when there is static member in a template class/function?
 >> Ans. Each instance of a template contains its own static variable.
 
-/*************************************** extern keyword **********************************************/
+## extern keyword 
 
-To give a constant an external linkage so that it can be referenced from another file we define it using the keyword reference. 
-e.g. extern const int z = 3; 
+- To give a constant an external linkage so that it can be referenced from another file we define it using the keyword reference. 
+    e.g. extern const int z = 3; 
 
-/*************************************** typedef keyword **********************************************/
+## typedef keyword 
 
-typedef is used to make aliases for defining new variable types.
-Usually used to convey logical information to the reader or to make larger representations easy to use
-e.g. typedef int* int_pt ;
-e.g. typedef map<list<int>,vector<int>>::iterator mapitr ; 
+- typedef is used to make aliases for defining new variable types.
+- Usually used to convey logical information to the reader or to make larger representations easy to use
+    > typedef int* int_pt ;
+    > typedef map<list<int>,vector<int>>::iterator mapitr ; 
 
-now you can directly use int_pt as integer pointer
 
-e.g. typedef struct myName myName ; 
-so you wont need to use struct myName everytime for defining objects of class myName.
+## Copy Constructor vs Assignment Operator 
 
-/*************************************** Copy Constructor vs Assignment Operator *********************************************/
+- A copy constructor can be called in the following cases:
+    1. A function returns an object by value 
+    2. An object is passed as an argument by value
+    3. A new object is initialized using an existing one. e.g. classA a = b; Copy constructor is called.
+    4. Compiler generates an temporary object. 
 
-A copy constructor can be called in the following cases:
-1. A function returns an object by value 
-2. An object is passed as an argument by value
-3. A new object is initialized using an existing one. e.g. classA a = b; Copy constructor is called.
-4. Compiler generates an temporary object. 
+> classA a = b; copy constructor 
+> ClassA a ,b ; a = b ; assignment operator 
 
-classA a = b; copy constructor 
-ClassA a ,b ; 
-a = b ; assignment operator 
+- Copy constructor takes const lvalue reference as the parameter so that both lvalue and rvalue refs can be captures as arguments
 
-Copy constructor takes const lvalue reference as the parameter so that both lvalue and rvalue refs can be captures as arguments
-
-Assignment operator returns reference to the object (*this) so that the object is passed by reference and not by value because
+- Assignment operator returns reference to the object (\*this) so that the object is passed by reference and not by value because
 if the object is passed by value everytime you do the assignment a copy constructor and a destructor will be called as well. 
 
-Remember to delete the heap memory in assignment operator if it has been already allocated in the constructors 
+> Remember to delete the heap memory in assignment operator if it has been already allocated in the constructors 
 
-/***************************************** Move Constructors **********************************************/
+## Move Constructors 
 
-Move constructors are used to take advantage of the memory allocated by temporary objects. 
-They take in rvalue references as the parameter
-One random issue could be assigning the moving temp object to itself. 
+- Move constructors are used to take advantage of the memory allocated by temporary objects. 
+- They take in rvalue references as the parameter
+- One random issue could be assigning the moving temp object to itself. 
 
-Another issue could be that the destructor of the temporary object delete the heap memory if we are using it. 
-However you could ensure that the memory is not deleted if before the destructor is called the pointer that memory block is moved and set to nullptr. 
+- Another issue could be that the destructor of the temporary object delete the heap memory if we are using it. 
+- However you could ensure that the memory is not deleted if before the destructor is called the pointer that memory block is moved and set to nullptr. 
 
-/***************************************** Private Constructors ***************************************************************/
-### Constructors can be defined in the private members but then inheritance of that class wont work
-### Virtual destructors should be use if you have a virtual function ! Deleting the base pointer to the derived object only clears the base pointer memory 
+## Private Constructors 
+- Constructors can be defined in the private members but then inheritance of that class wont work
+- Virtual destructors should be use if you have a virtual function ! Deleting the base pointer to the derived object only clears the base pointer memory 
 
+## File Input/Output 
 
-/*************************************** File Input/Output **********************************************/
+- File input and output are handled by streams. 
+- ios is a base class that has istream and ostream as the 2 derived classes 
+- iostream is the class that we have access to and is derived from istream and ostream. 
+- cin is the object of istream class and cout is the object of ostream class. 
 
-File input and output are handled by streams. 
-ios is a base class that has istream and ostream as the 2 derived classes 
-iostream is the class that we have access to and is derived from istream and ostream. 
-cin is the object of istream class and cout is the object of ostream class. 
+- ios gives us 2 functions get(char) or get(void) and put(char). They must be invoked on the appropriate iostream objects. 
 
-ios gives us 2 functions get(char) or get(void) and put(char). They must be invoked on the appropriate iostream objects. 
+- Also we get getline and write functions as getline(char * ,int size). Newline character is read and the reading process is stopped. 
+- The char\* array is terminated with the null character
 
-also we get getline and write functions as getline(char * ,int size). Newline character is read and the reading process is stopped. The char* array is terminated with the null character
+- write statement will output write(char \*,int size) size number of characters starting from charr[0] irrespective of the size of char array used in the argument. 
 
-write statement will output write(char *,int size) size number of characters starting from charr[0] irrespective of the size of char array used in the argument. 
+- ios functions
+  > width() precision() fill() setf() unsetf()
 
-ios functions
-width() precision() fill() setf() unsetf()
+- c++ never truncates the values if the width is less than what we need to output. it then just appends it at the end of the buffer
 
-c++ never truncates the values if the width is less than what we need to output. it then just appends it at the send of the buffer
+- width() should be called for each string. 
+- precision() retains the settings until it is reset 
 
-width() should be called for each string. 
-precision() retains the settings until it is reset 
+- default precision is 6 digits. 
 
-default precision is 6 digits. 
+- filling the unused fill widths with special characters can be done using fill() cout.fill('\*'). Fill is retained until reset
 
-filling the unused fill widths with special characters can be done using fill() cout.fill('*'). Fill is retained until reset
+- cout.setf(ios::showpoint) ; is used to display trailing zeros
 
-cout.setf(ios::showpoint) ; is used to display trailing zeros
+- Alternatives to the above functions are mainupulators. cout << setw(5) << x << endl  ;
 
-alternatives to the above functions are mainupulators. cout << setw(5) << x << endl  ;
-
-ifstream fin ; 
-fin.eof() != 0 // checks condition for the end of file
-f.good()
-f.fail()
-f.good()
+> fin.eof() != 0 // checks condition for the end of file
+  f.good()
+  f.fail()
+  f.good()
 
 
 /*************************************** Priority Queues Implementation **********************************************/
