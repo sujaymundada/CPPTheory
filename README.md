@@ -168,14 +168,14 @@ void check(T &&arg){
 
 > Most common use is to bind to the methods of class
     
-    ```
-    class Test{
-        public:
-            void add(int,int,int);
-    }; 
-    Test test ; 
-    auto bindex = std::bind(&Test::add,test,_1,_2)
-    ```
+```
+class Test{
+    public:
+        void add(int,int,int);
+}; 
+Test test ; 
+auto bindex = std::bind(&Test::add,test,_1,_2)
+```
 
 > Arugments to std::bind to bind methods - pointer to the function , object of the class , arguments/placeholders to the function 
 
@@ -186,31 +186,31 @@ void check(T &&arg){
 
 > unique pointers take care of deallocation of memory when the variable goes out of scope 
 
-    ```
-    class myClass{
-        private:
-            unique_ptr<int[]> myPtr ;
-        public:
-            myClass : myPtr(new int[3]){
-            }
-    }; 
-    ```
+```
+class myClass{
+    private:
+        unique_ptr<int[]> myPtr ;
+    public:
+        myClass : myPtr(new int[3]){
+        }
+}; 
+```
 
 > Note the difference between the following 2 lines of codes: 
 
-    ```
-    unique_ptr<int[]> myPtr(new int[3]) ;
-    unique_ptr<int> myPtr(new int(3)) ; 
-    ```
+```
+unique_ptr<int[]> myPtr(new int[3]) ;
+unique_ptr<int> myPtr(new int(3)) ; 
+```
 
 > There is always a single unique pointer pointing to a single resource. So you can't do assignment to unique pointers 
 
 >> However you can move the unique pointer to point to other resource using the new move semantics. 
 
-    ```
-    unique_ptr<int> myPtr(new int) ; 
-    unique_ptr<int> newPtr = std::move(myPtr); 
-    ```
+```
+unique_ptr<int> myPtr(new int) ; 
+unique_ptr<int> newPtr = std::move(myPtr); 
+```
 
 > the () are the constructor brackets used. For classes declare the unique pointers and then initialize them in constructors of the class. 
 
@@ -222,15 +222,15 @@ void check(T &&arg){
 
 > Shared pointers internally keep a reference count and delete the resource only when all the references have gone out of scope. 
     
-    ```
-    shared_ptr<int> myPtr(new int) ; 
-    ```
+```
+shared_ptr<int> myPtr(new int) ; 
+```
 
 > A better way to make shared pointers is using the following: This also initializes the value the pointer is pointing to  
 
-    ```
-    shared_ptr<int> myPtr = make_shared<int>(10) ; 
-    ```
+```
+shared_ptr<int> myPtr = make_shared<int>(10) ; 
+```
 
 ## Const Keyword
 - Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
@@ -269,17 +269,17 @@ void check(T &&arg){
 
 > for defining class templates 
     
-    ```
-    template <typename T>;
-    class Array{
-        private:
-            T* ptr ;
-            int size;
-        public:
-            Array(T arr,int size); //constructor 
-            Array(int index);
-    }
-    ```
+```
+template <typename T>;
+class Array{
+    private:
+        T* ptr ;
+        int size;
+    public:
+        Array(T arr,int size); //constructor 
+        Array(int index);
+}
+```
 
 
 > You can also define default values of the templates 
