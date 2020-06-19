@@ -2,6 +2,181 @@
 
 ## c++ tutorial 
 
+## CRTP - Curiously Recurring Template Pattern
+1.  Curiously recurring template pattern / Static Polymorphism. 
+2.  Dynamic binding of virtual tables happens at run time and this pays a cost. 
+3.  However you can shift this to compile time using static cast however for multiple such inheritances each new
+    template resolution of the base class is a new class and has to pay memory cost.
+
+## Lvalue and Rvalue References 
+L value and R value references. 
+You can only assign Lvalues to Lvalue references. 
+All named variables are lvalue references. 
+
+You can assign both lvalues and rvalues to const l value references.
+You can only assign rvalues to rvalue references. 
+
+An overloaded function of input parameter rvalue reference is preffered over an function of const lvalue reference. 
+const l value references can take both lvalues and r values as the arguments. 
+
+## Shallow Copy vs Deep Copy 
+Shallow Copy vs Deep Copy. 
+
+A shallow copy of an object copies all of the member field values. This works well if the fields are values, but may not be what you want for fields that point to dynamically allocated memory. The pointer will be copied. but the memory it points to will not be copied
+
+The deep copy however ensures that a copy of the dynamically alloted memory is also made. Make sure to have the destructor to delete the dynamically alloted memory and the overloaded assignment operator and the copy constructor for deep copy. 
+
+## Assignment Operator vs Copy Constructor vs Move Constructor 
+Copy Constructor: const l value reference as the argument 
+
+Assignment Operator: Returns reference to the object / \*this pointer so that chaining works and copy constructor / destructor is not called as compared to pass by value 
+
+Move Constructor : Takes r value reference as the parameter. Set pointers to heap memory blocks to nullptr so that destructors dont deallocate that memory
+block. 
+
+## Copy and Swap Idiom 
+
+    void A::swap(A &other){
+        swap(*this.a,other.a);
+        swap(*this.b,other.b);
+    }
+    A& A::operator=(A other) noexcept {
+        swap(other) ;
+        return *this ;
+    }
+
+>The above approach has multiple advantages:
+>> Self Assignment check can be skipped so useful for throwing noexcept
+>> Other is passed to assignment operator as a value and so memory deallocation of \*this previously allocated memory happens automatically
+>> This can take both lvalue and rvalue so implements both the copy assignment and move assignment.
+
+
+## Mutuable Lambdas 
+
+- Usually you pass parameters to lambadas by value or reference. 
+- When you pass the variables by values you are not allowed to change / assign to those variables in the scope of implementation of the lambda. 
+
+- **Mutable** keyword makes this possible
+
+> \[\=\]()mutable{a=3; cout << a << endl ; } ; 
+    >> a still retains its old value after this but prints 3 inside the lambda expression 
+
+## Delegating Constructors 
+
+- C++98 dint allow you to call one constructor from another. C++11 allows you to 
+
+
+## Static Cast
+
+- Evaluated at compile time 
+
+> Parent &&parentObj = static\_cast\<Parent &&\>(lvalueobj) ; 
+
+## Curiously Recurring Template Pattern (CRTP)
+
+- Virtual functions resolution at runtime using VTables is a big cost to pay. 
+- However such resolution could be used at compile time and run time cost could be avoided. 
+- CRTP is a design pattern in C++ in which a class X derives from a class template instantiation using X itself as template argument. More generally it is known as F-bound polymorphism.
+- This is a time vs space trade off
+- Another use case of CRTP is, when it’s required to access the derived class object in the base class member functions then will have to use CRTP.
+
+    template<typename T>
+    class Parent{
+        void somefunction{
+            auto derived = static_cast<T*>(this) ;
+            derived->somefunction() ;
+        }
+    };
+
+## Dynamic Cast
+
+- Run Time Type Information needs to be turned on in compilers
+- Type information using dynamic\_cast\<T\> is derived at run time. 
+- This is thus safer than the static\_cast for polymorphism as static\_cast will allow base class objects to be pointed by derived class pointers. 
+- Dynamic cast returns nullptr if the run time type check fails 
+
+    Derived\* derivedptr = dynamic\_cast\<Derived\*>(Parentptr) ;
+
+## Reinterpret cast
+
+- Has even less checks than static cast.
+- Used when static and dynamic cast cannot be used for casting very very different objects from one another. 
+
+
+## Perfect Forwarding
+
+- Correctly infers the reference type.
+- Use static\_cast to correctly infer the argument type to be lvalue or rvalue. 
+
+    template<typename T>
+    void check(T &&arg){
+        otherfunction(static\_cast<T>(arg)) ;
+    }
+- If you don't use static\_cast the reference collapses and you end up calling the lvalue function everytime. 
+
+- One special function to this casting is forward. Which does exactly the same thing as static\_cast but is intended for these purposes.
+
+    template<typename T>
+    void check(T &&arg){
+        otherfunction(forward<T>(arg)) ; 
+    }
+
+## Type Inference
+
+- C++ infers the type strictly from the arguments of the function. If you dont use <>
+- You can explicity state the template type T by using show\<double\>(arguments) ;  
+
+
+## Bind && Placeholders
+
+- include functional header and use namespace placeholders ;
+> auto addElem = bind(functionName,\_2,\_1,3) ;
+>> now you can call addElem(arg1,arg2) and it thereby calls the function functionName with arguments(arg2,arg1,3)
+
+> Most common use is to bind to the methods of class
+    class Test{
+        public:
+            void add(int,int,int);
+    }; 
+    Test test ; 
+    auto bindex = std::bind(&Test::add,test,_1,_2)
+> Arugments to std::bind to bind methods - pointer to the function , object of the class , arguments/placeholders to the function 
+
+## Smart Pointers
+### unique\_ptr 
+
+> unique\_ptr\<myClass[]\> ptrName(new myClass[2]) ; 
+> unique pointers take care of deallocation of memory when the variable goes out of scope 
+
+    class myClass{
+        private:
+            unique_ptr<int[]> myPtr ;
+        public:
+            myClass : myPtr(new int[3]){
+            }
+    }; 
+> Note the difference between the following 2 lines of codes: 
+
+    unique_ptr<int[]> myPtr(new int[3]) 
+    unique_ptr<int> myPtr(new int(3)) 
+
+> There is always a single unique pointer pointing to a single resource. So you can't do assignment to unique pointers 
+>> However you can move the unique pointer to point to other resource using the new move semantics. 
+    unique\_ptr\<int\> myPtr(new int) ; 
+    unique\_ptr\<int\> newPtr = std::move(myPtr); 
+
+> the () are the constructor brackets used. For classes declare the unique pointers and then initialize them in constructors of the class. 
+
+> The get() method of unique pointers gets you the raw pointer to the particular address. Ex when you want to cast an int pointer to a char * you need to use get.
+
+### Shared Pointers.
+
+> There can be multiple shared pointers pointing to a single resource and thus you can do assignment operations in shared pointers. 
+> Shared pointers internally keep a reference count and delete the resource only when all the references have gone out of scope. 
+    shared\_ptr\<int\> myPtr(new int) ; 
+> A better way to make shared pointers is using the following: This also initializes the value the pointer is pointing to  
+    shared\_ptr\<int\> myPtr = make\_shared\<int\>(10) ; 
+
 ## CONST KEYWORD 
 - Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
 - If nothing is to the immediate left of the keyword whatever to the immediate right is taken. 
@@ -144,142 +319,4 @@ if the object is passed by value everytime you do the assignment a copy construc
             //Implementation
         }
     };
-
-## Mutuable Lambdas 
-
-- Usually you pass parameters to lambadas by value or reference. 
-- When you pass the variables by reference you are not allowed to change / assign to those variables in the scope of implementation of the lambda. 
-
-- **Mutable** keyword makes this possible
-
-> \[\=\]()mutable{a=3; cout << a << endl ; } ; 
-    >> a still retains its old value after this but prints 3 inside the lambda expression 
-
-## Delegating Constructors 
-
-- C++98 dint allow you to call one constructor from another. C++11 allows you to 
-
-
-## Static Cast
-
-- Evaluated at compile time 
-
-> Parent &&parentObj = static\_cast\<Parent &&\>(lvalueobj) ; 
-
-## Curiously Recurring Template Pattern (CRTP)
-
-- Virtual functions resolution at runtime using VTables is a big cost to pay. 
-- However such resolution could be used at compile time and run time cost could be avoided. 
-- CRTP is a design pattern in C++ in which a class X derives from a class template instantiation using X itself as template argument. More generally it is known as F-bound polymorphism.
-- This is a time vs space trade off
-- Another use case of CRTP is, when it’s required to access the derived class object in the base class member functions then will have to use CRTP.
-
-    template<typename T>
-    class Parent{
-        void somefunction{
-            auto derived = static_cast<T*>(this) ;
-            derived->somefunction() ;
-        }
-    };
-
-## Dynamic Cast
-
-- Run Time Type Information needs to be turned on in compilers
-- Type information using dynamic\_cast\<T\> is derived at run time. 
-- This is thus safer than the static\_cast for polymorphism as static\_cast will allow base class objects to be pointed by derived class pointers. 
-- Dynamic cast returns nullptr if the run time type check fails 
-
-    Derived\* derivedptr = dynamic\_cast\<Derived\*>(Parentptr) ;
-
-## Reinterpret cast
-
-- Has even less checks than static cast.
-- Used when static and dynamic cast cannot be used for casting very very different objects from one another. 
-
-
-## Perfect Forwarding
-
-- Correctly infers the reference type.
-- Use static\_cast to correctly infer the argument type to be lvalue or rvalue. 
-
-    template<typename T>
-    void check(T &&arg){
-        otherfunction(static\_cast<T>(arg)) ;
-    }
-- If you don't use static\_cast the reference collapses and you end up calling the lvalue function everytime. 
-
-- One special function to this casting is forward. Which does exactly the same thing as static\_cast but is intended for these purposes.
-
-    template<typename T>
-    void check(T &&arg){
-        otherfunction(forward<T>(arg)) ; 
-    }
-
-## Type Inference
-
-- C++ infers the type strictly from the arguments of the function. If you dont use <>
-- You can explicity state the template type T by using show\<double\>(arguments) ;  
-
-
-## Bind && Placeholders
-
-- include functional header and use namespace placeholders ;
-> auto addElem = bind(functionName,\_2,\_1,3) ;
->> now you can call addElem(arg1,arg2) and it thereby calls the function functionName with arguments(arg2,arg1,3)
-
-> Most common use is to bind to the methods of class
-    class Test{
-        public:
-            void add(int,int,int);
-    }; 
-    Test test ; 
-    auto bindex = std::bind(&Test::add,test,_1,_2)
-> Arugments to std::bind to bind methods - pointer to the function , object of the class , arguments/placeholders to the function 
-
-## Smart Pointers
-### unique\_ptr 
-
-> unique\_ptr\<myClass[]\> ptrName(new myClass[2]) ; 
-> unique pointers take care of deallocation of memory when the variable goes out of scope 
-
-    class myClass{
-        private:
-            unique_ptr<int[]> myPtr ;
-        public:
-            myClass : myPtr(new int[3]){
-            }
-    }; 
-> Note the difference between the following 2 lines of codes: 
-
-    unique_ptr<int[]> myPtr(new int[3]) 
-    unique_ptr<int> myPtr(new int(3)) 
-
-> There is always a single unique pointer pointing to a single resource. So you can't do assignment to unique pointers 
->> However you can move the unique pointer to point to other resource using the new move semantics. 
-    unique\_ptr\<int\> myPtr(new int) ; 
-    unique\_ptr\<int\> newPtr = std::move(myPtr); 
-
-> the () are the constructor brackets used. For classes declare the unique pointers and then initialize them in constructors of the class. 
-
-> The get() method of unique pointers gets you the raw pointer to the particular address. Ex when you want to cast an int pointer to a char * you need to use get.
-
-### Shared Pointers.
-
-> There can be multiple shared pointers pointing to a single resource and thus you can do assignment operations in shared pointers. 
-> Shared pointers internally keep a reference count and delete the resource only when all the references have gone out of scope. 
-    shared\_ptr\<int\> myPtr(new int) ; 
-> A better way to make shared pointers is using the following: This also initializes the value the pointer is pointing to  
-    shared\_ptr\<int\> myPtr = make\_shared\<int\>(10) ; 
-
-
-
-
-
-
-
-
-
-
-
-
 
