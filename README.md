@@ -95,7 +95,8 @@ block.
 
     template<typename T>
     class Parent{
-        void somefunction{
+        public:
+            void somefunction{
             auto derived = static_cast<T*>(this) ;
             derived->somefunction() ;
         }
