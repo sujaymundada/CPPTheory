@@ -206,6 +206,72 @@ if the object is passed by value everytime you do the assignment a copy construc
     void check(T &&arg){
         otherfunction(static\_cast<T>(arg)) ;
     }
+- If you don't use static\_cast the reference collapses and you end up calling the lvalue function everytime. 
+
+- One special function to this casting is forward. Which does exactly the same thing as static\_cast but is intended for these purposes.
+
+    template<typename T>
+    void check(T &&arg){
+        otherfunction(forward<T>(arg)) ; 
+    }
+
+## Type Inference
+
+- C++ infers the type strictly from the arguments of the function. If you dont use <>
+- You can explicity state the template type T by using show\<double\>(arguments) ;  
+
+
+## Bind && Placeholders
+
+- include functional header and use namespace placeholders ;
+> auto addElem = bind(functionName,\_2,\_1,3) ;
+>> now you can call addElem(arg1,arg2) and it thereby calls the function functionName with arguments(arg2,arg1,3)
+
+> Most common use is to bind to the methods of class
+    class Test{
+        public:
+            void add(int,int,int);
+    }; 
+    Test test ; 
+    auto bindex = std::bind(&Test::add,test,_1,_2)
+> Arugments to std::bind to bind methods - pointer to the function , object of the class , arguments/placeholders to the function 
+
+## Smart Pointers
+### unique\_ptr 
+
+> unique\_ptr\<myClass[]\> ptrName(new myClass[2]) ; 
+> unique pointers take care of deallocation of memory when the variable goes out of scope 
+
+    class myClass{
+        private:
+            unique_ptr<int[]> myPtr ;
+        public:
+            myClass : myPtr(new int[3]){
+            }
+    }; 
+> Note the difference between the following 2 lines of codes: 
+
+    unique_ptr<int[]> myPtr(new int[3]) 
+    unique_ptr<int> myPtr(new int(3)) 
+
+> There is always a single unique pointer pointing to a single resource. So you can't do assignment to unique pointers 
+>> However you can move the unique pointer to point to other resource using the new move semantics. 
+    unique\_ptr\<int\> myPtr(new int) ; 
+    unique\_ptr\<int\> newPtr = std::move(myPtr); 
+
+> the () are the constructor brackets used. For classes declare the unique pointers and then initialize them in constructors of the class. 
+
+> The get() method of unique pointers gets you the raw pointer to the particular address. Ex when you want to cast an int pointer to a char * you need to use get.
+
+### Shared Pointers.
+
+> There can be multiple shared pointers pointing to a single resource and thus you can do assignment operations in shared pointers. 
+> Shared pointers internally keep a reference count and delete the resource only when all the references have gone out of scope. 
+    shared\_ptr\<int\> myPtr(new int) ; 
+> A better way to make shared pointers is using the following: This also initializes the value the pointer is pointing to  
+    shared\_ptr\<int\> myPtr = make\_shared\<int\>(10) ; 
+
+
 
 
 
