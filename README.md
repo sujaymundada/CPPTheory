@@ -93,12 +93,12 @@ block.
 
 - Another use case of CRTP is, when it’s required to access the derived class object in the base class member functions then will have to use CRTP.
 
-    template<typename T>
+    template\<typename T\>
     class Parent{
         public:
             void somefunction{
-            auto derived = static_cast<T*>(this) ;
-            derived->somefunction() ;
+            auto derived = static_cast\<T*\>(this) ;
+            derived-\>somefunction() ;
         }
     };
 
