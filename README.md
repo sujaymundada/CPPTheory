@@ -39,17 +39,18 @@ Move Constructor : Takes r value reference as the parameter. Set pointers to hea
 block. 
 
 ## Copy and Swap Idiom 
-    ```
-    void A::swap(A &other){
-        swap(*this.a,other.a);
-        swap(*this.b,other.b);
-    }
 
-    A& A::operator=(A other) noexcept {
-        swap(other) ;
-        return *this ;
-    }
-    ```
+```
+void A::swap(A &other){
+    swap(*this.a,other.a);
+    swap(*this.b,other.b);
+}
+
+A& A::operator=(A other) noexcept {
+    swap(other) ;
+    return *this ;
+}
+```
 
 >The above approach has multiple advantages:
 
@@ -71,6 +72,7 @@ block.
 ```
 \[\=\]()mutable{a=3; cout << a << endl ; } ; 
 ```
+
 > a still retains its old value after this but prints 3 inside the lambda expression 
 
 ## Delegating Constructors 
@@ -96,16 +98,16 @@ block.
 
 - Another use case of CRTP is, when it’s required to access the derived class object in the base class member functions then will have to use CRTP.
 
-    ```
-    template\<typename T\>
-    class Parent{
-        public:
-            void somefunction{
-                auto derived = static_cast\<T*\>(this) ;
-                derived-\>somefunction() ;
-            }
-    };
-    ```
+```
+template<typename T>
+class Parent{
+    public:
+        void somefunction{
+            auto derived = static_cast<T*>(this) ;
+            derived->somefunction() ;
+        }
+};
+```
 
 ## Dynamic Cast
 
@@ -116,10 +118,10 @@ block.
 - This is thus safer than the static\_cast for polymorphism as static\_cast will allow base class objects to be pointed by derived class pointers. 
 
 - Dynamic cast returns nullptr if the run time type check fails 
-    
-    ```
-    Derived\* derivedptr = dynamic_cast<Derived*>(Parentptr) ;
-    ```
+
+```
+Derived* derivedptr = dynamic_cast<Derived*>(Parentptr) ;
+```
 
 ## Reinterpret cast
 
@@ -133,12 +135,12 @@ block.
 
 - Use static\_cast to correctly infer the argument type to be lvalue or rvalue. 
     
-    ```
-    template<typename T>
-    void check(T &&arg){
-        otherfunction(static_cast<T>(arg)) ;
-    }
-    ```
+```
+template<typename T>
+void check(T &&arg){
+    otherfunction(static_cast<T>(arg)) ;
+}
+```
 
 - If you don't use static\_cast the reference collapses and you end up calling the lvalue function everytime. 
 
