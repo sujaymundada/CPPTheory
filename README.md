@@ -39,7 +39,7 @@ Move Constructor : Takes r value reference as the parameter. Set pointers to hea
 block. 
 
 ## Copy and Swap Idiom 
-
+    ```
     void A::swap(A &other){
         swap(*this.a,other.a);
         swap(*this.b,other.b);
@@ -49,6 +49,7 @@ block.
         swap(other) ;
         return *this ;
     }
+    ```
 
 >The above approach has multiple advantages:
 
@@ -67,8 +68,10 @@ block.
 
 - **Mutable** keyword makes this possible
 
-> \[\=\]()mutable{a=3; cout << a << endl ; } ; 
-    >> a still retains its old value after this but prints 3 inside the lambda expression 
+```
+\[\=\]()mutable{a=3; cout << a << endl ; } ; 
+```
+> a still retains its old value after this but prints 3 inside the lambda expression 
 
 ## Delegating Constructors 
 
@@ -113,8 +116,10 @@ block.
 - This is thus safer than the static\_cast for polymorphism as static\_cast will allow base class objects to be pointed by derived class pointers. 
 
 - Dynamic cast returns nullptr if the run time type check fails 
-
-    Derived\* derivedptr = dynamic\_cast\<Derived\*>(Parentptr) ;
+    
+    ```
+    Derived\* derivedptr = dynamic_cast<Derived*>(Parentptr) ;
+    ```
 
 ## Reinterpret cast
 
@@ -127,20 +132,24 @@ block.
 - Correctly infers the reference type.
 
 - Use static\_cast to correctly infer the argument type to be lvalue or rvalue. 
-
-    template\<typename T\>
+    
+    ```
+    template<typename T>
     void check(T &&arg){
-        otherfunction(static\_cast\<T\>(arg)) ;
+        otherfunction(static_cast<T>(arg)) ;
     }
+    ```
 
 - If you don't use static\_cast the reference collapses and you end up calling the lvalue function everytime. 
 
 - One special function to this casting is forward. Which does exactly the same thing as static\_cast but is intended for these purposes.
 
-    template\<typename T\>
+    ```
+    template<typename T>
     void check(T &&arg){
-        otherfunction(forward\<T\>(arg)) ; 
+        otherfunction(forward<T>(arg)) ; 
     }
+    ```
 
 ## Type Inference
 
@@ -156,13 +165,15 @@ block.
     >> now you can call addElem(arg1,arg2) and it thereby calls the function functionName with arguments(arg2,arg1,3)
 
 > Most common use is to bind to the methods of class
-
+    
+    ```
     class Test{
         public:
             void add(int,int,int);
     }; 
     Test test ; 
     auto bindex = std::bind(&Test::add,test,_1,_2)
+    ```
 
 > Arugments to std::bind to bind methods - pointer to the function , object of the class , arguments/placeholders to the function 
 
@@ -173,6 +184,7 @@ block.
 
 > unique pointers take care of deallocation of memory when the variable goes out of scope 
 
+    ```
     class myClass{
         private:
             unique_ptr<int[]> myPtr ;
@@ -180,18 +192,23 @@ block.
             myClass : myPtr(new int[3]){
             }
     }; 
+    ```
 
 > Note the difference between the following 2 lines of codes: 
 
-    unique_ptr<int[]> myPtr(new int[3]) 
-    unique_ptr<int> myPtr(new int(3)) 
+    ```
+    unique_ptr<int[]> myPtr(new int[3]) ;
+    unique_ptr<int> myPtr(new int(3)) ; 
+    ```
 
 > There is always a single unique pointer pointing to a single resource. So you can't do assignment to unique pointers 
 
 >> However you can move the unique pointer to point to other resource using the new move semantics. 
 
-    unique\_ptr\<int\> myPtr(new int) ; 
-    unique\_ptr\<int\> newPtr = std::move(myPtr); 
+    ```
+    unique_ptr<int> myPtr(new int) ; 
+    unique_ptr<int> newPtr = std::move(myPtr); 
+    ```
 
 > the () are the constructor brackets used. For classes declare the unique pointers and then initialize them in constructors of the class. 
 
@@ -202,12 +219,16 @@ block.
 > There can be multiple shared pointers pointing to a single resource and thus you can do assignment operations in shared pointers. 
 
 > Shared pointers internally keep a reference count and delete the resource only when all the references have gone out of scope. 
-
-    shared\_ptr\<int\> myPtr(new int) ; 
+    
+    ```
+    shared_ptr<int> myPtr(new int) ; 
+    ```
 
 > A better way to make shared pointers is using the following: This also initializes the value the pointer is pointing to  
 
-    shared\_ptr\<int\> myPtr = make\_shared\<int\>(10) ; 
+    ```
+    shared_ptr<int> myPtr = make_shared<int>(10) ; 
+    ```
 
 ## Const Keyword
 - Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
@@ -245,16 +266,19 @@ block.
 - you can define 2 templates as well. template <typename T, typename U> 
 
 > for defining class templates 
-
+    
+    ```
     template <typename T>;
-        class Array{
-            private:
-                T* ptr ;
-                int size;
-            public:
-                Array(T arr,int size); //constructor 
-                Array(int index);
-        }
+    class Array{
+        private:
+            T* ptr ;
+            int size;
+        public:
+            Array(T arr,int size); //constructor 
+            Array(int index);
+    }
+    ```
+
 
 > You can also define default values of the templates 
     >> e.g.    template <typename T, typename U =char>
