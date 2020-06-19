@@ -1,4 +1,4 @@
-# Udemy Course Files
+# Sujay Modern CPP Shortnotes
 
 ## C++ tutorial 
 
