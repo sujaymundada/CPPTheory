@@ -93,13 +93,14 @@ block.
 
 - Another use case of CRTP is, when it’s required to access the derived class object in the base class member functions then will have to use CRTP.
 
+
     template\<typename T\>
     class Parent{
         public:
             void somefunction{
-            auto derived = static_cast\<T*\>(this) ;
-            derived-\>somefunction() ;
-        }
+                auto derived = static_cast\<T*\>(this) ;
+                derived-\>somefunction() ;
+            }
     };
 
 ## Dynamic Cast
@@ -126,18 +127,18 @@ block.
 
 - Use static\_cast to correctly infer the argument type to be lvalue or rvalue. 
 
-    template<typename T>
+    template\<typename T\>
     void check(T &&arg){
-        otherfunction(static\_cast<T>(arg)) ;
+        otherfunction(static\_cast\<T\>(arg)) ;
     }
 
 - If you don't use static\_cast the reference collapses and you end up calling the lvalue function everytime. 
 
 - One special function to this casting is forward. Which does exactly the same thing as static\_cast but is intended for these purposes.
 
-    template<typename T>
+    template\<typename T\>
     void check(T &&arg){
-        otherfunction(forward<T>(arg)) ; 
+        otherfunction(forward\<T\>(arg)) ; 
     }
 
 ## Type Inference
