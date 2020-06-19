@@ -107,7 +107,7 @@ block.
 
 - Type information using dynamic\_cast\<T\> is derived at run time. 
 
--This is thus safer than the static\_cast for polymorphism as static\_cast will allow base class objects to be pointed by derived class pointers. 
+- This is thus safer than the static\_cast for polymorphism as static\_cast will allow base class objects to be pointed by derived class pointers. 
 
 - Dynamic cast returns nullptr if the run time type check fails 
 
@@ -206,7 +206,7 @@ block.
 
     shared\_ptr\<int\> myPtr = make\_shared\<int\>(10) ; 
 
-## CONST KEYWORD 
+## Const Keyword
 - Const Keyword Directly applies to whatever is to the immediate left of the keyword. 
 
 - If nothing is to the immediate left of the keyword whatever to the immediate right is taken. 
@@ -233,7 +233,8 @@ block.
 
 - you can access the character array of the string as char \*myArr = myString.c\_str();
 
-## TEMPLATES 
+## Templates
+
 - templates are used for generic programming
 
 - syntax: template <class T> or template <typename T>
@@ -264,12 +265,12 @@ block.
 > Ques. What happens when there is static member in a template class/function?
     >> Ans. Each instance of a template contains its own static variable.
 
-## extern keyword 
+## Extern Keyword 
 
 - To give a constant an external linkage so that it can be referenced from another file we define it using the keyword reference. 
     - e.g. extern const int z = 3; 
 
-## typedef keyword 
+## Typedef Keyword 
 
 - typedef is used to make aliases for defining new variable types.
 
