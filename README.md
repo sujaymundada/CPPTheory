@@ -358,7 +358,7 @@ if the object is passed by value everytime you do the assignment a copy construc
 
 ## Priority Queues Implementation 
 
-> priority\_queue(T,vector<T>,comparator) ;
+> priority\_queue(T,vector\<T\>,comparator) ;
 
     class comparator{
         bool operator()(classA a1, classB b1){
