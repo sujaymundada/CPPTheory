@@ -51,9 +51,9 @@ block.
     }
 
 >The above approach has multiple advantages:
-    >> Self Assignment check can be skipped so useful for throwing noexcept
-    >> Other is passed to assignment operator as a value and so memory deallocation of \*this previously allocated memory happens automatically
-    >> This can take both lvalue and rvalue so implements both the copy assignment and move assignment.
+>> Self Assignment check can be skipped so useful for throwing noexcept
+>> Other is passed to assignment operator as a value and so memory deallocation of \*this previously allocated memory happens automatically
+>> This can take both lvalue and rvalue so implements both the copy assignment and move assignment.
 
 
 ## Mutuable Lambdas 
