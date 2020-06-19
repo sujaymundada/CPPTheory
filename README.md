@@ -2,6 +2,107 @@
 
 ## C++ tutorial 
 
+## Decltype vs Auto 
+1. Auto call is deduced the type of the value assigned to it.
+2. Decltype deduction happens from the type of the expression assigned to it. 
+
+```
+struct X{
+    int i; 
+    double bar(short); 
+};
+
+X x; 
+decltype(x) y; // y is of the type x 
+std::vector<decltype(x.i)> vi; // vi is a vector of type int 
+using memberFunctionPointer = decltype(&X::bar); // memberFunctionPointer is of the type double X::(\*)(short)
+auto lamb = [&]() -> decltype(y) { return y; }; // y of the type const X& 
+```
+
+- Use of decltype is for making generic lambdas
+
+```
+auto make\_multiples = [](auto const& x, std::size_t n) {
+  return std::vector\<std::decay\_t<decltype(x) \> \>(n, x);
+};
+```
+
+> The std::decay\_t used in the previous example strips of the const& from the type of x
+
+> Working with the type of whatever was passed to the lambda function requires the use of decltype
+
+> Whatever expression we pass to decltype doesnt get evaluated at runtime like the example below 
+
+```
+decltype(std::cout<<"Hi";) will result in ostream& but nothing gets printed to the screen
+```
+
+## Declval 
+
+- In some contexts we usually don't have objects available that we will need to pass to a decltype expression. 
+
+- It is just a declared function template that returns an rvalue reference to whatever you pass to it
+
+> decltype(function(declval<int>())) ; 
+
+> It comes in much handy if you are in a templated context and the value that you want to obtain depends on a template parameter
+
+```
+template<typename T, typename U>
+using sum_t = decltype(declval<T>() + declval<U>()) ; 
+```
+> Note that neither T or U needs to be fully defined when we are evaluating sum\_t 
+
+## Constexpr vs inline functions 
+
+> Both are for performance improvement 
+    1. Inline functions request compiler to expand at run time to reduce the overhead of function calls. 
+    2. Inline functions always evaluate the value of the expressions at runtime. 
+    3. Constexpr evaluates the value of the expression at compile time. 
+
+> Constexpr functions should refer only const global variables 
+
+> Constexpr functions can only call other constexpr functions not normal functions 
+
+> Function return type cannot be void and prefix increment operator ++ is not allowed. 
+
+```
+constexpr long int fib(int n)
+{
+    return (n <= 1)? n : fib(n-1) + fib(n-2);
+}
+
+int main ()
+{
+    // value of res is computed at compile time.
+    const long int res = fib(30);
+    cout << res;
+    return 0;
+}
+```
+> The above function took 0.003 seconds to run on my system compared to 0.017 seconds of the below function 
+
+```
+const long int fib(int n)
+{
+    return (n <= 1)? n : fib(n-1) + fib(n-2);
+}
+
+int main ()
+{
+    long int res = fib(30); // this value isnt calculated at compile time because of the missing const 
+    cout << res;
+    return 0;
+}
+```
+
+## Constexpr vs Const
+
+> const is used so that the value of the variable is made non modifiable. 
+
+> constexpr is used majorly for the optimization purposes so that compile time const operations are not done at run time. 
+
+
 ## CRTP - Curiously Recurring Template Pattern
 1.  Curiously recurring template pattern / Static Polymorphism. 
 2.  Dynamic binding of virtual tables happens at run time and this pays a cost. 
@@ -63,9 +164,13 @@ A& A::operator=(A other) noexcept {
 
 ## Mutuable Lambdas 
 
+- Lambdas are very commonly used in std::sort functions 
+
+> auto lamb = [](){} ; 
+
 - Usually you pass parameters to lambadas by value or reference. 
 
-- When you pass the variables by values you are not allowed to change / assign to those variables in the scope of implementation of the lambda. 
+- When you pass the variables by value you are not allowed to change / assign to those variables in the scope of implementation of the lambda. 
 
 - **Mutable** keyword makes this possible
 
