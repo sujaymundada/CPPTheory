@@ -3,8 +3,8 @@
 ## C++ tutorial 
 
 ## Decltype vs Auto 
-1. Auto call is deduced the type of the value assigned to it.
-2. Decltype deduction happens from the type of the expression assigned to it. 
+1. Auto call is deduced the type of the value assigned to it.   
+2. Decltype deduction happens from the type of the expression assigned to it.     
 
 ```
 struct X{
@@ -32,11 +32,9 @@ auto make_multiples = [](auto const& x, std::size_t n) {
 };
 ```
 
-> The std::decay_t used in the previous example strips of the const& from the type of x
-
-> Working with the type of whatever was passed to the lambda function requires the use of decltype
-
-> Whatever expression we pass to decltype doesnt get evaluated at runtime like the example below 
+The std::decay_t used in the previous example strips of the const& from the type of x   
+Working with the type of whatever was passed to the lambda function requires the use of decltype   
+Whatever expression we pass to decltype doesnt get evaluated at runtime like the example below    
 
 ```
 decltype(std::cout<<"Hi";) will result in ostream& but nothing gets printed to the screen
@@ -44,13 +42,13 @@ decltype(std::cout<<"Hi";) will result in ostream& but nothing gets printed to t
 
 ## Declval 
 
-- In some contexts we usually don't have objects available that we will need to pass to a decltype expression. 
+In some contexts we usually don't have objects available that we will need to pass to a decltype expression.    
 
-- It is just a declared function template that returns an rvalue reference to whatever you pass to it
+It is just a declared function template that returns an rvalue reference to whatever you pass to it   
 
 > decltype(function(declval<int>())) ; 
 
-> It comes in much handy if you are in a templated context and the value that you want to obtain depends on a template parameter
+It comes in much handy if you are in a templated context and the value that you want to obtain depends on a template parameter   
 
 ```
 template<typename T, typename U>
@@ -58,7 +56,7 @@ using sum_t = decltype(declval<T>() + declval<U>()) ;
 
 ```
 
-> Note that neither T or U needs to be fully defined when we are evaluating sum\_t 
+Note that neither T or U needs to be fully defined when we are evaluating sum_t    
 
 ## Constexpr vs inline functions 
 
@@ -87,6 +85,7 @@ int main ()
     return 0;
 }
 ```
+
 > The above function took 0.003 seconds to run on my system compared to 0.017 seconds of the below function 
 
 ```
@@ -111,10 +110,10 @@ int main ()
 
 
 ## CRTP - Curiously Recurring Template Pattern
-1.  Curiously recurring template pattern / Static Polymorphism. 
-2.  Dynamic binding of virtual tables happens at run time and this pays a cost. 
-3.  However you can shift this to compile time using static cast however for multiple such inheritances each new
-    template resolution of the base class is a new class and has to pay memory cost.
+1.  Curiously recurring template pattern / Static Polymorphism.    
+2.  Dynamic binding of virtual tables happens at run time and this pays a cost.    
+3.  However you can shift this to compile time using static cast however for multiple such inheritances each new   
+    template resolution of the base class is a new class and has to pay memory cost.  
 
 ## Lvalue and Rvalue References 
 L value and R value references. 
@@ -123,7 +122,7 @@ You can only assign Lvalues to Lvalue references.
 
 All named variables are lvalue references. 
 
-You can assign both lvalues and rvalues to const l value references.
+- You can assign both lvalues and rvalues to const l value references.
 
 You can only assign rvalues to rvalue references. 
 
@@ -139,14 +138,15 @@ A shallow copy of an object copies all of the member field values. This works we
 The deep copy however ensures that a copy of the dynamically alloted memory is also made. Make sure to have the destructor to delete the dynamically alloted memory and the overloaded assignment operator and the copy constructor for deep copy. 
 
 ## Assignment Operator vs Copy Constructor vs Move Constructor 
-Copy Constructor: const l value reference as the argument 
 
-Assignment Operator: Returns reference to the object / \*this pointer so that chaining works and copy constructor / destructor is not called as compared to pass by value 
+- Copy Constructor: const l value reference as the argument [A move constructor overrides this function for the rvalue references] 
 
-Move Constructor : Takes r value reference as the parameter. Set pointers to heap memory blocks to nullptr so that destructors dont deallocate that memory
+- Assignment Operator: Returns reference to the object / \*this pointer so that chaining works and copy constructor / destructor is not called as compared to pass by value 
+
+- Move Constructor : Takes r value reference as the parameter. Set pointers to heap memory blocks to nullptr so that destructors dont deallocate that memory
 block. 
 
-## Copy and Swap Idiom 
+## Copy and Swap Idiom -- Used in Assignment Operators 
 
 ```
 void A::swap(A &other){
@@ -196,7 +196,7 @@ A& A::operator=(A other) noexcept {
 
 - Evaluated at compile time 
 
-> Parent &&parentObj = static\_cast\<Parent &&\>(lvalueobj) ; 
+> Parent &&parentObj = static_cast\<Parent &&\>(lvalueobj) ; 
 
 ## Curiously Recurring Template Pattern (CRTP)
 
