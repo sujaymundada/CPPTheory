@@ -32,7 +32,7 @@ auto make_multiples = [](auto const& x, std::size_t n) {
 };
 ```
 
-> The std::decay\_t used in the previous example strips of the const& from the type of x
+> The std::decay_t used in the previous example strips of the const& from the type of x
 
 > Working with the type of whatever was passed to the lambda function requires the use of decltype
 
@@ -55,15 +55,17 @@ decltype(std::cout<<"Hi";) will result in ostream& but nothing gets printed to t
 ```
 template<typename T, typename U>
 using sum_t = decltype(declval<T>() + declval<U>()) ; 
+
 ```
+
 > Note that neither T or U needs to be fully defined when we are evaluating sum\_t 
 
 ## Constexpr vs inline functions 
 
-> Both are for performance improvement 
-    1. Inline functions request compiler to expand at run time to reduce the overhead of function calls. 
-    2. Inline functions always evaluate the value of the expressions at runtime. 
-    3. Constexpr evaluates the value of the expression at compile time. 
+> Both are for performance improvement    
+    1. Inline functions request compiler to expand at run time to reduce the overhead of function calls.    
+    2. Inline functions always evaluate the value of the expressions at runtime.    
+    3. Constexpr evaluates the value of the expression at compile time.    
 
 > Constexpr functions should refer only const global variables 
 
