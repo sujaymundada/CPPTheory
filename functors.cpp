@@ -6,7 +6,7 @@
 
 * Creation Date         :   10-06-2020
 
-* Last Modified         :   Wed Jun 10 10:18:05 2020
+* Last Modified         :   Fri Jun 19 19:31:04 2020
 
 ***********************************************************/
 
@@ -18,6 +18,7 @@
 
 using namespace std; 
 
+/* Use of function library to represent all kinds of functors including lambdas */ 
 void SomeRandomFunction(function<bool(int k)> boolfunc){
     cout << boolfunc(3) << endl;
 }
@@ -41,7 +42,8 @@ int main(){
     SomeRandomFunction(functor) ; 
 
     SomeRandomFunction(match) ; 
-
+    
+    /* Lambda Expression */ 
     SomeRandomFunction([](int k=3){return k==3;}); 
 
 }

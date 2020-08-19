@@ -13,17 +13,22 @@ struct X{
 };
 
 X x; 
-decltype(x) y; // y is of the type x 
-std::vector<decltype(x.i)> vi; // vi is a vector of type int 
-using memberFunctionPointer = decltype(&X::bar); // memberFunctionPointer is of the type double X::(\*)(short)
-auto lamb = [&]() -> decltype(y) { return y; }; // y of the type const X& 
+
+decltype(x) y;
+
+std::vector<decltype(x.i)> vi;
+
+using memberFunctionPointer = decltype(&X::bar); 
+
+auto lamb = [&]() -> decltype(y) { return y; }; 
+
 ```
 
 - Use of decltype is for making generic lambdas
 
 ```
-auto make\_multiples = [](auto const& x, std::size_t n) {
-  return std::vector\<std::decay\_t<decltype(x) \> \>(n, x);
+auto make_multiples = [](auto const& x, std::size_t n) {
+  return std::vector\<std::decay_t<decltype(x) \> \>(n, x);
 };
 ```
 
